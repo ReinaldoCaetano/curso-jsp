@@ -9,17 +9,17 @@
 <body>
 <h1>Curso de JSP Login BB</h1>
 <form action="ServletLogin" method="post">
-
+<input type="hidden"  value="<%=request.getParameter("url")%>" name="url">
 <table>
 	<tr>
 	<td><label>Login</label></td>
 	<td>
-		<input type="text" name = "login">	
+		<input type="text" name ="login">	
 	</td>
 	</tr>
 	<tr>
 	<td><label>Senha</label></td>
-	<td><input type="password" name = "senha"></td>
+	<td><input type="password" name ="senha"></td>
 	</tr>
 	<tr>
 	<td>
