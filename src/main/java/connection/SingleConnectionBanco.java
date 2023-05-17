@@ -4,9 +4,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 public class SingleConnectionBanco  {
-	private static String banco ="jdbc:postgresql:localhost:5433/curso-jsp?autoReconnnect=true";
+	private static String banco ="jdbc:postgresql://localhost:5433/curso-jsp?autoReconnect=true";
 	private static String user ="postgres";
-	private static String senha = "123456";
+	private static String senha = "postgres";
 	private static Connection connection = null;
 	
 	
@@ -27,7 +27,7 @@ public class SingleConnectionBanco  {
 	private static void conectar() {
 		try {
 			if (connection == null) {
-				Class.forName("org.postgresql.Drive"); // carrega o driver de conexao do banco
+				Class.forName("org.postgresql.Driver"); // carrega o driver de conexao do banco
 				connection = DriverManager.getConnection(banco, user, senha);
 				connection.setAutoCommit(false); //para nao efeturar alteracoes no banco sem nosso comando
 			}
