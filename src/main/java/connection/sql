@@ -1,0 +1,11 @@
+create table model_login(
+	id serial primary key,
+	nome character varying(300) not null,
+	email character varying(300) not null,
+	login character varying(200) not null,
+	senha character varying(300) not null
+	
+);
+INSERT INTO model_login(
+	 nome, email, login, senha)
+	VALUES (?, ?, ?, ?);

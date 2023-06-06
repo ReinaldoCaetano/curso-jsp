@@ -37,8 +37,8 @@
 <input type="hidden"  value="<%=request.getParameter("url")%>" name="url">
 	
 	<div class="mb-3">
-    <label for="inputEmail4" class="form-label">Login</label>
-    <input type="email" class="form-control" id="inputEmail4" name="login" required>
+    <label for="inputAddress" class="form-label">Login</label>
+    <input type="text" class="form-control" id="inputEmail4" name="login" required>
 	  	<div class="invalid-feedback">
 	      Informe o Login !
 	    </div>

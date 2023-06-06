@@ -71,6 +71,7 @@
                                             </div>	
                                             <!--  project and team member end -->
                                         </div>
+                                        <span>${msg}</span>
                                     </div>
                                     <!-- Page-body end -->
                                 </div>
