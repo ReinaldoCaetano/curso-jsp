@@ -36,7 +36,7 @@
                                                     <div class="card-block">
                                                         <form class="form-material" action="<%=request.getContextPath()%>/ServletUsuarioController" method="post">
 	                                                       <div class="form-group form-default">
-	                                                             <input type="text" name="id" id="id" class="form-control"  value="${modolLogin.id}">
+	                                                             <input type="text" name="id" id="id" class="form-control" disabled="" value="${modolLogin.id}">
 	                                                             <span class="form-bar"></span>
 	                                                             <label class="float-label">ID:</label>
 	                                                       </div>
