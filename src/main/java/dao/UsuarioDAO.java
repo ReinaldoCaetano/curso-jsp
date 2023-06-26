@@ -64,7 +64,7 @@ public class UsuarioDAO {
 		resultado.next();
 		return resultado.getBoolean("existe");
 	}
-	
+		
 	
 	
 	
