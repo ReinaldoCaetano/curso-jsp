@@ -25,7 +25,35 @@ public class ServletUsuarioController extends HttpServlet {
 
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		try {
+			String acao = request.getParameter("acao");
+			if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("deletar")) {
+				
+				String idUser = request.getParameter("id");
+				usuarioDAO.deletarUsuario(idUser);
+				
+				request.setAttribute("msg", "Excluido com sucesso !!");
+				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
+				
+			}else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("deletarajax")) {
+				
+				String idUser = request.getParameter("id");
+				usuarioDAO.deletarUsuario(idUser);
+				
+				response.getWriter().write("Excluido Com Sucesso !");
+				
+			}else {
+				
+			request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			RequestDispatcher redirecionar = request.getRequestDispatcher("erro.jsp");
+			request.setAttribute("msg", e.getMessage());
+			redirecionar.forward(request, response);
+		}
+	
+	
 	}
 
 	
@@ -41,18 +69,24 @@ public class ServletUsuarioController extends HttpServlet {
 			
 			ModelLogin modelLogin = new ModelLogin();
 			
+			modelLogin.setId(id != null && !id.isEmpty() ? Long.parseLong(id) : null);
 			modelLogin.setNome(nome);
 			modelLogin.setEmail(email);
 			modelLogin.setLogin(login);
 			modelLogin.setSenha(senha);
 			
-			if(usuarioDAO.validarLogin(modelLogin.getLogin())) {
-			msg = "Já existe usuário com o mesmo login !" ;
-				
+			if(usuarioDAO.validarLogin(modelLogin.getLogin())  && modelLogin.getId() == null) {
+				 msg = "Já existe usuário com o mesmo login !" ;
+					
 			}else {
+				if(modelLogin.isNovo()) {
+					msg = "Gravado Com sucesso !!";
+				}else {
+					msg = "Atualizado com Sucesso !!";
+				}
 				modelLogin =  usuarioDAO.gravarUsuario(modelLogin);
-				
 			}
+			
 			
 			request.setAttribute("msg", msg);
 			request.setAttribute("modolLogin", modelLogin);
