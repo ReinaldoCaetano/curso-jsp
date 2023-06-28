@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.ModelLogin;
 
-@WebServlet("/ServletUsuarioController")
+@WebServlet(urlPatterns = {"/ServletUsuarioController"})
 public class ServletUsuarioController extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
@@ -34,6 +34,9 @@ public class ServletUsuarioController extends HttpServlet {
 				
 				String idUser = request.getParameter("id");
 				usuarioDAO.deletarUsuario(idUser);
+				
+				List<ModelLogin> modelLogins = usuarioDAO.consultaUsuarioList();
+				request.setAttribute("modelLogins", modelLogins);	
 				
 				request.setAttribute("msg", "Excluido com sucesso !!");
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
@@ -64,13 +67,25 @@ public class ServletUsuarioController extends HttpServlet {
 				
 				ModelLogin modelLogin = usuarioDAO.consultaUsuarioId(id);
 				
+				List<ModelLogin> modelLogins = usuarioDAO.consultaUsuarioList();
+				request.setAttribute("modelLogins", modelLogins);	
+				
 				request.setAttribute("msg", "Usuario em Edição");
 				request.setAttribute("modolLogin", modelLogin);
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 				
+			}else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("listarUsuario")) {
+				
+				List<ModelLogin> modelLogins = usuarioDAO.consultaUsuarioList();
+				request.setAttribute("msg", "Usuarios em Carregados");
+				request.setAttribute("modelLogins", modelLogins);
+				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
+				
 			}else {
 				
-				
+			List<ModelLogin> modelLogins = usuarioDAO.consultaUsuarioList();
+		    request.setAttribute("modelLogins", modelLogins);
+		    
 			request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 			}
 		} catch (Exception e) {
@@ -112,8 +127,11 @@ public class ServletUsuarioController extends HttpServlet {
 					msg = "Atualizado com Sucesso !!";
 				}
 				modelLogin =  usuarioDAO.gravarUsuario(modelLogin);
+				
 			}
 			
+			List<ModelLogin> modelLogins = usuarioDAO.consultaUsuarioList();
+			request.setAttribute("modelLogins", modelLogins);	
 			
 			request.setAttribute("msg", msg);
 			request.setAttribute("modolLogin", modelLogin);
