@@ -3,6 +3,7 @@ package servlets;
 import java.io.IOException;
 
 import dao.LoginDAO;
+import dao.UsuarioDAO;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -16,6 +17,7 @@ public class ServletLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private LoginDAO loginDAO = new LoginDAO();
+	UsuarioDAO usuarioDAO = new UsuarioDAO();
 
 	public ServletLogin() {
 
@@ -51,8 +53,11 @@ public class ServletLogin extends HttpServlet {
 				modelLogin.setSenha(senha);
 
 				if (loginDAO.validarAutenticacao(modelLogin)) {
+					
+					modelLogin = usuarioDAO.consultaUsuarioLogado(login);
 
 					request.getSession().setAttribute("usuario", modelLogin.getLogin());
+					request.getSession().setAttribute("isAdmin", modelLogin.getUseradmin());
 
 					if (url == null || url.equals("null")) {
 						url = "principal/principal.jsp";

@@ -11,6 +11,10 @@ public class ModelLogin implements Serializable{
 	private String email;
 	private String login;
 	private String senha;
+	private boolean useradmin; 
+	private String perfil;
+	
+	
 	
 	
 	public boolean isNovo() {
@@ -23,6 +27,27 @@ public class ModelLogin implements Serializable{
 	        return id == null;
 	}
 	
+	
+	public String getPerfil() {
+		return perfil;
+	}
+
+
+	public void setPerfil(String perfil) {
+		this.perfil = perfil;
+	}
+
+
+	public boolean getUseradmin() {
+		return useradmin;
+	}
+
+
+	public void setUseradmin(boolean useradmin) {
+		this.useradmin = useradmin;
+	}
+
+
 	public Long getId() {
 		return id;
 	}
