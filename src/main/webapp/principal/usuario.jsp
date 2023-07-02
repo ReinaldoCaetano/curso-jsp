@@ -1,3 +1,4 @@
+<%@page import="model.ModelLogin"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %> 
@@ -54,11 +55,32 @@
                                                                 <label class="float-label">E-mail:</label>
                                                             </div>
                                                             <div class="form-group form-default form-static-label">
-                                                                <select class="form-control" >
-																  <option  selected>[Selecione o Perfil]</option>
-																  <option  value="ADMIN">Admin</option>
-																  <option  value="SECRETARIA">Secretária</option>
-																  <option  value="AUXILIAR">Auxiliar</option>
+                                                                <select class="form-control" name="perfil" >
+																  <option disabled="disabled" >[Selecione o Perfil]</option>
+																  <option  value="ADMIN"  <% 
+																  ModelLogin modelLogin = (ModelLogin) request.getAttribute("modolLogin");
+																  if (modelLogin != null && modelLogin.getPerfil().equals("ADMIN")){
+																	  out.print(" ");
+																	  out.print("selected=\"selected\"");
+																	  out.print(" ");
+																  } %>>Admin</option>
+																  
+																  <option  value="SECRETARIA" <% 
+																  modelLogin = (ModelLogin) request.getAttribute("modolLogin");
+																  if (modelLogin != null && modelLogin.getPerfil().equals("SECRETARIA")){
+																	  out.print(" ");
+																	  out.print("selected=\"selected\"");
+																	  out.print(" ");
+																  } %>>Secretária</option>
+																  
+																  <option  value="AUXILIAR" <% 
+																 modelLogin = (ModelLogin) request.getAttribute("modolLogin");
+																  if (modelLogin != null && modelLogin.getPerfil().equals("AUXILIAR")){
+																	  out.print(" ");
+																	  out.print("selected=\"selected\"");
+																	  out.print(" ");
+																  } %>>Auxiliar</option>
+																  
 																</select >
 																<label class="float-label">Perfil: </label>
                                                             </div>
@@ -168,7 +190,7 @@
  function verEditar(id) {
 	 var urlAction = document.getElementById("formUser").action;
 	 
-	 window.location.href = urlAction + "?acao=buscarEditar&id=" + id;
+	 window.location.href = urlAction + "?acao=buscarEditar&id="+id;
 	 
 }
  

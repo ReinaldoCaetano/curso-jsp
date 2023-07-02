@@ -10,6 +10,7 @@ INSERT INTO model_login(
 	 nome, email, login, senha)
 	VALUES (?, ?, ?, ?);
 	
+alter table model_login add column useradmin boolean not null default false;
 	
 ALTER TABLE model_login ADD COLUMN usuario_id BIGINT NOT null DEFAULT 1;
 
