@@ -36,7 +36,7 @@
                                                         <!--<span>Add class of <code>.form-control</code> with <code>&lt;input&gt;</code> tag</span>-->
                                                     </div>
                                                     <div class="card-block">
-                                                        <form class="form-material" action="<%=request.getContextPath()%>/ServletUsuarioController" method="post" id="formUser">
+                                                        <form class="form-material" enctype="multipart/form-data" action="<%=request.getContextPath()%>/ServletUsuarioController" method="post" id="formUser">
 	                                                      	<input type="hidden" name="acao" id="acao" value="">
 	                                                      	
 	                                                       <div class="form-group form-default form-static-label">
@@ -44,6 +44,14 @@
 	                                                             <span class="form-bar"></span>
 	                                                             <label class="float-label">ID:</label>
 	                                                       </div>
+	                                                       
+	                                                       <div class="form-group form-default input-group mb-4" >
+	                                                       <div class="input-group-prepend">
+	                                                        <img alt="Imagem User" id="fotoBase64" src="https://abravidro.org.br/wp-content/uploads/2015/04/sem-imagem9.jpg" width="70px">
+	                                                       </div>
+	                                                      	<input type="file" id="fileFoto" name="fileFoto" accept="image/*" onchange="visualizarImg('fotoBase64','fileFoto')" class="form-control-file" style="margin-top:15px; margin-left: 5px">
+	                                                       </div>
+	                                                       
                                                              <div class="form-group form-default form-static-label">
                                                                 <input type="text" name="nome" id="nome" class="form-control" required="required" value="${modolLogin.nome }">
                                                                 <span class="form-bar"></span>
@@ -89,10 +97,26 @@
                                                                 <span class="form-bar"></span>
                                                                 <label class="float-label">Login: </label>
                                                             </div>
-                                                               <div class="form-group form-default form-static-label">
+                                                            <div class="form-group form-default form-static-label">
                                                                 <input type="password" name="senha" id="senha" class="form-control" required="required" autocomplete="off" value="${modolLogin.senha}">
                                                                 <span class="form-bar"></span>
                                                                 <label class="float-label">Senha</label>
+                                                            </div>
+                                                            <div class="form-group form-default form-static-label">
+                                                            <input type="radio" name="sexo" checked="checked" value="MASCULINO" <% 
+																 modelLogin = (ModelLogin) request.getAttribute("modolLogin");
+																  if (modelLogin != null && modelLogin.getSexo().equals("MASCULINO")){
+																	  out.print(" ");
+																	  out.print("checked=\"checked\"");
+																	  out.print(" ");
+																  } %>>Masculino</>
+                                                            <input type="radio" name="sexo" value="FEMININO" <% 
+																 modelLogin = (ModelLogin) request.getAttribute("modolLogin");
+																  if (modelLogin != null && modelLogin.getSexo().equals("FEMININO")){
+																	  out.print(" ");
+																	  out.print("checked=\"checked\"");
+																	  out.print(" ");
+																  } %>>Feminino</>
                                                             </div>
                                                          	<div class="card-block">
                                                             <button type="button" class="btn btn-primary btn-round waves-effect waves-light" onclick="limparForm();">Novo</button>
@@ -186,6 +210,21 @@
  
  <jsp:include page="javascriptfile.jsp"></jsp:include>
  <script type="text/javascript">
+ 
+ function visualizarImg(fotoBase64,fileFoto) {
+	var preview = document.getElementById("fotoBase64");
+	var fileUser = document.getElementById("fileFoto").files[0];
+	var reader = new FileReader();
+	
+	reader.onloadend = function () {
+		preview.src = reader.result;
+	};
+	if (fileUser){
+		reader.readAsDataURL(fileUser);
+	}else{
+		preview.src="";
+	}
+}
  
  function verEditar(id) {
 	 var urlAction = document.getElementById("formUser").action;
