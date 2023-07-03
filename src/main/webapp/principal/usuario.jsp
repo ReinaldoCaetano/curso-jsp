@@ -49,7 +49,9 @@
 	                                                       <div class="input-group-prepend">
 	                                                       
 	                                                       <c:if test="${modolLogin.fotouser != '' && modolLogin.fotouser != null}">
+	                                                       <a href="<%= request.getContextPath()%>/ServletUsuarioController?acao=downloadFoto&id=${modolLogin.id}">
 	                                                       <img alt="Imagem User" id="fotoBase64" src="${modolLogin.fotouser}" width="70px">
+	                                                       </a>
 	                                                       </c:if>
 	                                                       <c:if test="${modolLogin.fotouser == '' || modolLogin.fotouser == null}">
 	                                                       <img alt="Imagem User" id="fotoBase64" src="assets/images/avatar-blank.jpg" width="70px">
@@ -99,6 +101,32 @@
 																</select >
 																<label class="float-label">Perfil: </label>
                                                             </div>
+                                                            <div class="form-group form-default form-static-label">
+                                                                <input type="text" onblur="pesquisaCep();" name="cep" id="cep" class="form-control" required="required" value="${modolLogin.cep }">
+                                                                <span class="form-bar"></span>
+                                                                <label class="float-label">Cep: </label>
+                                                            </div>
+                                                            <div class="form-group form-default form-static-label">
+                                                                <input type="text" name="logradouro" id="logradouro" class="form-control" required="required" value="${modolLogin.logradouro }">
+                                                                <span class="form-bar"></span>
+                                                                <label class="float-label">Logradouro: </label>
+                                                            </div>
+                                                            <div class="form-group form-default form-static-label">
+                                                                <input type="text" name="localidade" id="localidade" class="form-control" required="required" value="${modolLogin.localidade }">
+                                                                <span class="form-bar"></span>
+                                                                <label class="float-label">Cidade: </label>
+                                                            </div>
+                                                            <div class="form-group form-default form-static-label">
+                                                                <input type="text" name="uf" id="uf" class="form-control" required="required" value="${modolLogin.uf }">
+                                                                <span class="form-bar"></span>
+                                                                <label class="float-label">Estado: </label>
+                                                            </div>
+                                                            <div class="form-group form-default form-static-label">
+                                                                <input type="text" name="numero" id="numero" class="form-control" required="required" value="${modolLogin.numero }">
+                                                                <span class="form-bar"></span>
+                                                                <label class="float-label">Numero: </label>
+                                                            </div>
+                                                            
                                                              <div class="form-group form-default form-static-label">
                                                                 <input type="text" name="login" id="login" class="form-control" required="required" value="${modolLogin.login }">
                                                                 <span class="form-bar"></span>
@@ -217,6 +245,23 @@
  
  <jsp:include page="javascriptfile.jsp"></jsp:include>
  <script type="text/javascript">
+ 
+ 
+ function pesquisaCep() {
+	var cep = $('#cep').val();
+	$.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
+		
+		if (!("erro" in dados)) {
+			//Atualiza os campos com os valores da consulta.
+			$("#cep").val(dados.cep);
+            $("#logradouro").val(dados.logradouro);
+            $("#bairro").val(dados.bairro);
+            $("#localidade").val(dados.localidade);
+            $("#uf").val(dados.uf);
+		}
+		
+	});
+}
  
  function visualizarImg(fotoBase64,fileFoto) {
 	var preview = document.getElementById("fotoBase64");

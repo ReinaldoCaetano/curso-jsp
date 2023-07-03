@@ -85,6 +85,16 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				request.setAttribute("modelLogins", modelLogins);
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 				
+			}else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("downloadFoto")) {
+				
+				String idUser = request.getParameter("id");
+				ModelLogin modelLogin = usuarioDAO.consultaUsuarioId(idUser, super.getUserLogado(request));
+				if (modelLogin.getFotouser() != null && !modelLogin.getFotouser().isEmpty()) {
+					response.setHeader("Content-Disposition", "attachment;filename=arquivo."+modelLogin.getExtensaofotouser());
+					response.getOutputStream().write(new org.apache.tomcat.util.codec.binary.Base64()
+							.decodeBase64(modelLogin.getFotouser().split("\\,")[1]));
+				}
+				
 			}else {
 				
 			List<ModelLogin> modelLogins = usuarioDAO.consultaUsuarioList(super.getUserLogado(request));
@@ -114,6 +124,12 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			String senha = request.getParameter("senha");
 			String perfil = request.getParameter("perfil");
 			String sexo = request.getParameter("sexo");
+			String cep = request.getParameter("cep");
+			String logradouro = request.getParameter("logradouro");
+			String bairro = request.getParameter("bairro");
+			String localidade = request.getParameter("localidade");
+			String uf = request.getParameter("uf");
+			String numero = request.getParameter("numero");
 			
 			ModelLogin modelLogin = new ModelLogin();
 			
@@ -124,7 +140,12 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			modelLogin.setSenha(senha);
 			modelLogin.setPerfil(perfil);
 			modelLogin.setSexo(sexo);
-			
+			modelLogin.setCep(cep);
+			modelLogin.setLogradouro(logradouro);
+			modelLogin.setBairro(bairro);
+			modelLogin.setLocalidade(localidade);
+			modelLogin.setUf(uf);
+			modelLogin.setNumero(numero);
 			
 			 boolean isMultipart = request.getContentType() != null && request.getContentType().startsWith("multipart/form-data");
 

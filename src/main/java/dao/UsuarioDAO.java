@@ -22,7 +22,8 @@ public class UsuarioDAO {
 		
 		if(objeto.isNovo()) {
 		
-		String sql = "INSERT INTO model_login (nome, email, login, senha, usuario_id, perfil, sexo) VALUES (?, ?, ?, ?, ?, ?, ?);";
+		String sql = "INSERT INTO model_login (nome, email, login, senha, usuario_id, perfil, sexo, cep, logradouro, bairro, localidade, uf, numero)"
+				+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 		
 		PreparedStatement preparedSQL = connection.prepareStatement(sql);
 		preparedSQL.setString(1, objeto.getNome());
@@ -32,6 +33,12 @@ public class UsuarioDAO {
 		preparedSQL.setLong(5, userLogado);
 		preparedSQL.setString(6, objeto.getPerfil());
 		preparedSQL.setString(7, objeto.getSexo());
+		preparedSQL.setString(8, objeto.getCep());
+		preparedSQL.setString(9, objeto.getLogradouro());
+		preparedSQL.setString(10, objeto.getBairro());
+		preparedSQL.setString(11, objeto.getLocalidade());
+		preparedSQL.setString(12, objeto.getUf());
+		preparedSQL.setString(13, objeto.getNumero());
 		
 		preparedSQL.execute();
 		
@@ -50,7 +57,8 @@ public class UsuarioDAO {
 		}
 		
 		 } else {
-				String sql = "UPDATE model_login SET  nome=?, email=?, login=?, senha=?, perfil=?, sexo=? WHERE id = "+objeto.getId()+" ;";
+				String sql = "UPDATE model_login SET  nome=?, email=?, login=?, senha=?, perfil=?, sexo=?, cep=?,"
+						+ " logradouro=?, bairro=?, localidade=?, uf=?, numero=? WHERE id = "+objeto.getId()+" ;";
 				PreparedStatement prepareSql = connection.prepareStatement(sql);
 				prepareSql.setString(1, objeto.getNome());
 				prepareSql.setString(2, objeto.getEmail());
@@ -58,6 +66,12 @@ public class UsuarioDAO {
 				prepareSql.setString(4, objeto.getSenha());
 				prepareSql.setString(5, objeto.getPerfil());
 				prepareSql.setString(6, objeto.getSexo());
+				prepareSql.setString(7, objeto.getCep());
+				prepareSql.setString(8, objeto.getLogradouro());
+				prepareSql.setString(9, objeto.getBairro());
+				prepareSql.setString(10, objeto.getLocalidade());
+				prepareSql.setString(11, objeto.getUf());
+				prepareSql.setString(12, objeto.getNumero());
 				
 				prepareSql.executeUpdate();
 				connection.commit();
@@ -146,6 +160,12 @@ public ModelLogin consultaUsuarioLogado (String login) throws Exception {
 			modelLogin.setPerfil(resultado.getString("perfil"));
 			modelLogin.setSexo(resultado.getString("sexo"));
 			modelLogin.setFotouser(resultado.getString("fotouser"));
+			modelLogin.setCep(resultado.getString("cep"));
+			modelLogin.setLogradouro(resultado.getString("logradouro"));
+			modelLogin.setBairro(resultado.getString("bairro"));
+			modelLogin.setLocalidade(resultado.getString("localidade"));
+			modelLogin.setUf(resultado.getString("uf"));
+			modelLogin.setNumero(resultado.getString("numero"));
 		}
 		
 		return modelLogin;
@@ -171,6 +191,12 @@ public ModelLogin consultaUsuario (String login) throws Exception {
 			modelLogin.setPerfil(resultado.getString("perfil"));
 			modelLogin.setSexo(resultado.getString("sexo"));
 			modelLogin.setFotouser(resultado.getString("fotouser"));
+			modelLogin.setCep(resultado.getString("cep"));
+			modelLogin.setLogradouro(resultado.getString("logradouro"));
+			modelLogin.setBairro(resultado.getString("bairro"));
+			modelLogin.setLocalidade(resultado.getString("localidade"));
+			modelLogin.setUf(resultado.getString("uf"));
+			modelLogin.setNumero(resultado.getString("numero"));
 
 		}
 		
@@ -196,6 +222,12 @@ public ModelLogin consultaUsuario (String login) throws Exception {
 			modelLogin.setPerfil(resultado.getString("perfil"));
 			modelLogin.setSexo(resultado.getString("sexo"));
 			modelLogin.setFotouser(resultado.getString("fotouser"));
+			modelLogin.setCep(resultado.getString("cep"));
+			modelLogin.setLogradouro(resultado.getString("logradouro"));
+			modelLogin.setBairro(resultado.getString("bairro"));
+			modelLogin.setLocalidade(resultado.getString("localidade"));
+			modelLogin.setUf(resultado.getString("uf"));
+			modelLogin.setNumero(resultado.getString("numero"));
 
 		}
 		
@@ -222,6 +254,13 @@ public ModelLogin consultaUsuario (String login) throws Exception {
 				modelLogin.setPerfil(resultado.getString("perfil"));
 				modelLogin.setSexo(resultado.getString("sexo"));
 				modelLogin.setFotouser(resultado.getString("fotouser"));
+				modelLogin.setExtensaofotouser(resultado.getString("extensaofotouser"));
+				modelLogin.setCep(resultado.getString("cep"));
+				modelLogin.setLogradouro(resultado.getString("logradouro"));
+				modelLogin.setBairro(resultado.getString("bairro"));
+				modelLogin.setLocalidade(resultado.getString("localidade"));
+				modelLogin.setUf(resultado.getString("uf"));
+				modelLogin.setNumero(resultado.getString("numero"));
 
 			}
 			
