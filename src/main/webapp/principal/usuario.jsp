@@ -47,7 +47,14 @@
 	                                                       
 	                                                       <div class="form-group form-default input-group mb-4" >
 	                                                       <div class="input-group-prepend">
-	                                                        <img alt="Imagem User" id="fotoBase64" src="https://abravidro.org.br/wp-content/uploads/2015/04/sem-imagem9.jpg" width="70px">
+	                                                       
+	                                                       <c:if test="${modolLogin.fotouser != '' && modolLogin.fotouser != null}">
+	                                                       <img alt="Imagem User" id="fotoBase64" src="${modolLogin.fotouser}" width="70px">
+	                                                       </c:if>
+	                                                       <c:if test="${modolLogin.fotouser == '' || modolLogin.fotouser == null}">
+	                                                       <img alt="Imagem User" id="fotoBase64" src="assets/images/avatar-blank.jpg" width="70px">
+	                                                       </c:if>
+	                                                        
 	                                                       </div>
 	                                                      	<input type="file" id="fileFoto" name="fileFoto" accept="image/*" onchange="visualizarImg('fotoBase64','fileFoto')" class="form-control-file" style="margin-top:15px; margin-left: 5px">
 	                                                       </div>

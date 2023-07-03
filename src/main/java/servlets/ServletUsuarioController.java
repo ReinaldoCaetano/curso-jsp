@@ -3,8 +3,8 @@ package servlets;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.tomcat.jakartaee.commons.compress.utils.IOUtils;
-import org.apache.tomcat.util.codec.binary.Base64;
+import jakarta.servlet.http.HttpServlet;
+import java.util.Base64;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -126,12 +126,20 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			modelLogin.setSexo(sexo);
 			
 			
-			if(ServletFileUpload.isMultipartContent(request)) {
-				Part part = request.getPart("fileFoto"); //pega foto da tela
-				byte[] foto = IOUtils.toByteArray(part.getInputStream());
-				String imagemBase64 = new Base64().encodeBase64String(foto);
-				System.out.println(imagemBase64);
-			}
+			 boolean isMultipart = request.getContentType() != null && request.getContentType().startsWith("multipart/form-data");
+
+	            if (isMultipart) {
+	                Part part = request.getPart("fileFoto"); // pega foto da tela
+
+	                if (part != null && part.getSize() > 0) {
+	                    byte[] foto = part.getInputStream().readAllBytes();
+	                    String imagemBase64 = "data:image/" +part.getContentType().split("\\/")[1] +";base64,"+ Base64.getEncoder().encodeToString(foto);
+	                    modelLogin.setFotouser(imagemBase64);
+	                    modelLogin.setExtensaofotouser(part.getContentType().split("\\/")[1]);
+	                }
+	            }
+
+
 			
 			if(usuarioDAO.validarLogin(modelLogin.getLogin())  && modelLogin.getId() == null) {
 				 msg = "Já existe usuário com o mesmo login !" ;
