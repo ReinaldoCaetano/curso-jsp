@@ -43,6 +43,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				request.setAttribute("modelLogins", modelLogins);	
 				
 				request.setAttribute("msg", "Excluido com sucesso !!");
+				request.setAttribute("totalPagina", usuarioDAO.totalPagina(this.getUserLogado(request)));
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 				
 			}else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("deletarajax")) {
@@ -62,6 +63,22 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			     
 			     String json = mapper.writeValueAsString(dadosJsonUser);
 				
+			    response.addHeader("totalPagina","" + usuarioDAO.consultaUsuarioListTotalPaginacao(nomeBusca, super.getUserLogado(request)) );
+			    response.getWriter().write(json);
+			    
+				
+			}else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarUserAjaxPage")) {
+				
+				String nomeBusca = request.getParameter("nomeBusca");
+				String pagina = request.getParameter("pagina");
+				
+			     List<ModelLogin> dadosJsonUser = usuarioDAO.consultaUsuarioListOffSet(nomeBusca,super.getUserLogado(request),Integer.parseInt(pagina));
+			     
+			     ObjectMapper mapper = new ObjectMapper();
+			     
+			     String json = mapper.writeValueAsString(dadosJsonUser);
+				
+			    response.addHeader("totalPagina"," " + usuarioDAO.consultaUsuarioListTotalPaginacao(nomeBusca, super.getUserLogado(request)) );
 			    response.getWriter().write(json);
 			    
 				
@@ -76,6 +93,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				
 				request.setAttribute("msg", "Usuario em Edição");
 				request.setAttribute("modolLogin", modelLogin);
+				request.setAttribute("totalPagina", usuarioDAO.totalPagina(this.getUserLogado(request)));
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 				
 			}else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("listarUsuario")) {
@@ -83,6 +101,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				List<ModelLogin> modelLogins = usuarioDAO.consultaUsuarioList(super.getUserLogado(request));
 				request.setAttribute("msg", "Usuarios em Carregados");
 				request.setAttribute("modelLogins", modelLogins);
+				request.setAttribute("totalPagina", usuarioDAO.totalPagina(this.getUserLogado(request)));
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 				
 			}else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("downloadFoto")) {
@@ -95,11 +114,20 @@ public class ServletUsuarioController extends ServletGenericUtil {
 							.decodeBase64(modelLogin.getFotouser().split("\\,")[1]));
 				}
 				
+			}else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("paginar")) {
+				
+				Integer offset = Integer.parseInt(request.getParameter("pagina"));
+				List<ModelLogin> modelLogins = usuarioDAO.consultaUsuarioListPaginada(this.getUserLogado(request),offset);
+				
+				request.setAttribute("modelLogins", modelLogins);
+			    request.setAttribute("totalPagina", usuarioDAO.totalPagina(this.getUserLogado(request)));
+				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
+				
 			}else {
 				
 			List<ModelLogin> modelLogins = usuarioDAO.consultaUsuarioList(super.getUserLogado(request));
 		    request.setAttribute("modelLogins", modelLogins);
-		    
+		    request.setAttribute("totalPagina", usuarioDAO.totalPagina(this.getUserLogado(request)));
 			request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 			}
 		} catch (Exception e) {
@@ -180,6 +208,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			
 			request.setAttribute("msg", msg);
 			request.setAttribute("modolLogin", modelLogin);
+			request.setAttribute("totalPagina", usuarioDAO.totalPagina(this.getUserLogado(request)));
 			request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
