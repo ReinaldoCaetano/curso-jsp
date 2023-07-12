@@ -2,6 +2,9 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import connection.SingleConnectionBanco;
 import model.ModelTelefone;
@@ -9,13 +12,35 @@ import model.ModelTelefone;
 public class TelefoneDAO {
 	
 	private Connection connection;
+	private UsuarioDAO usuarioDAO;
 	
 	public TelefoneDAO() {
 		connection = SingleConnectionBanco.getConnection();
-		
-		
-		
 	}
+	
+	public List<ModelTelefone> listFone(Long idUserPai) throws Exception{
+		
+		List<ModelTelefone> retorno = new ArrayList<ModelTelefone>();
+		
+		String sql = "select * from telefone where usuario_pai_id = ?";
+		PreparedStatement preparedStatement = connection.prepareStatement(sql);
+		
+		ResultSet rs = preparedStatement.executeQuery();
+		
+		while (rs.next()) {
+			ModelTelefone modelTelefone = new ModelTelefone();
+			
+			modelTelefone.setId(rs.getLong("id"));
+			modelTelefone.setNumero(rs.getString("numero"));
+			modelTelefone.setUsuario_cad_id(usuarioDAO.consultaUsuarioId(rs.getLong("usuario_cad_id")));
+			modelTelefone.setUsuario_pai_id(usuarioDAO.consultaUsuarioId(rs.getLong("usuario_pai_id")));
+		}
+		return retorno;
+	}
+	
+	
+	
+	
 	
 	public void gravaTelefone(ModelTelefone modelTelefone)  throws Exception{
 		String sql = "insert into telefone (numero, usuario_pai_id, usuario_cad_id) values (?,?,?)";
@@ -27,7 +52,15 @@ public class TelefoneDAO {
 		preparedStatement.execute();
 		connection.commit();
 		
+	}
+	
+	public void deleteTelefone(Long id) throws Exception{
+		String sql = "delete from telefone where id =?";
+		PreparedStatement preparedStatement = connection.prepareStatement(sql);
+		preparedStatement.setLong(1, id);
 		
+		preparedStatement.executeUpdate();
+		connection.commit();
 	}
 
 }
